@@ -16,8 +16,8 @@ public:
   Node<T> *next;
   Node<T> *prev;
 
-  Node(T *dataInput,Node *nextNode,Node *prevNode)
-      : date(dataInput),next(nextNode),prev(prevNode){
+  Node(T *dataInput)
+      : date(dataInput),next(nullptr),prev(nullptr){
   }
 
 }
