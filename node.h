@@ -14,13 +14,13 @@ class Node{
 public:
   T data;
   Node<T> *next;
-  Node<T> *prev;
+  Node<T> *previous;
 
-  Node(T *dataInput)
-      : date(dataInput),next(nullptr),prev(nullptr){
+  Node(T dataInput)
+      : data(dataInput),next(nullptr),previous(nullptr){
   }
 
-}
+};
 
 
 
@@ -28,12 +28,11 @@ public:
 template<typename T>
 class NodeIterator {
 
-private:
 
-    Node<T>* current;
 
 public:
 
+  Node<T>* current;
 
     NodeIterator(Node<T>* currentIn)
         : current(currentIn) {
@@ -41,6 +40,18 @@ public:
 
     T & operator*() {
         return current->data;
+    }
+
+    void operator++(){
+      current = current->next;
+    }
+
+    bool operator!=(const NodeIterator<T> &other){
+      return (current != other.current);
+    }
+
+    bool operator==(const NodeIterator<T> &other){
+      return (current == other.current);
     }
 
     // TODO: complete the code for NodeIterator here
