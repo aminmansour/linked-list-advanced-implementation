@@ -19,7 +19,6 @@ public:
   Node(T dataInput)
       : data(dataInput),next(nullptr),previous(nullptr){
   }
-
 };
 
 
@@ -27,9 +26,6 @@ public:
 
 template<typename T>
 class NodeIterator {
-
-
-
 public:
 
   Node<T>* current;
@@ -38,7 +34,7 @@ public:
         : current(currentIn) {
     }
 
-    T & operator*() {
+    T & operator*() const{
         return current->data;
     }
 
@@ -46,11 +42,11 @@ public:
       current = current->next;
     }
 
-    bool operator!=(const NodeIterator<T> &other){
+    bool operator!=(const NodeIterator<T> &other) const{
       return (current != other.current);
     }
 
-    bool operator==(const NodeIterator<T> &other){
+    bool operator==(const NodeIterator<T> &other) const{
       return (current == other.current);
     }
 
