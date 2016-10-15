@@ -14,6 +14,9 @@ private:
 int count;
 Node<T> *head;
 Node<T> *tail;
+//currentPointer is present so i can pass by reference for my
+//begin() and end() without having to create a new copy each time
+NodeIterator<T> currentPointer;
 public:
 
 LinkedList()
@@ -28,19 +31,24 @@ LinkedList(initializer_list<T> l): count(0),head(nullptr),tail(nullptr){
 
 
 
-NodeIterator<T> & insert(NodeIterator<T> &ittr,const T &elem){
+NodeIterator<T> &insert(NodeIterator<T> &ittr,const T &elem){
     T oldElem = ittr.current->data;
     ittr.current->data = elem;
     Node<T> *newNode = new Node<T>(oldElem);
     newNode->next = ittr.current->next;
     newNode->previous = ittr.current;
-    ittr.current->next->previous = newNode;
+    if(tail==ittr.current){
+        tail = newNode;
+    }else{
+      ittr.current->next->previous = newNode;
+    }
     ittr.current->next = newNode;
     ++count;
     return ittr;
 }
 
-NodeIterator<T> & erase(NodeIterator<T> &ittr){
+NodeIterator<T> &erase( NodeIterator<T> &ittr){
+
   Node<T> *nodeToRemove = ittr.current;
   if(head==ittr.current){
     head = nodeToRemove->next;
@@ -58,6 +66,7 @@ NodeIterator<T> & erase(NodeIterator<T> &ittr){
     delete nodeToRemove;
     return ittr;
 }
+
 void push_front(const T &ele){
   Node<T> *newNode = new Node<T>(ele);
   if(count>0){
@@ -94,14 +103,14 @@ int size() const{
   return count;
 }
 
- NodeIterator<T> begin() const{
-   NodeIterator<T> s(head);
-  return s;
+ NodeIterator<T> &begin(){
+  currentPointer.current = head;
+  return currentPointer;
 }
 
-NodeIterator<T> end() const{
-  NodeIterator<T> s(tail->next);
-  return s;
+NodeIterator<T> &end(){
+  currentPointer.current = tail->next;
+  return currentPointer;
 }
 
 ~LinkedList(){
