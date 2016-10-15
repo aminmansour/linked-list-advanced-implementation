@@ -4,6 +4,7 @@
 #include "node.h"
 #include <iostream>
 #include <string>
+#include <initializer_list>
 
 using namespace std;
 // TODO your code goes here:
@@ -19,6 +20,35 @@ LinkedList()
     : count(0),head(nullptr),tail(nullptr){
 }
 
+LinkedList(initializer_list<T> l): count(0),head(nullptr),tail(nullptr){
+  for(const T &item:l){
+      push_back(item);
+  }
+}
+
+
+
+NodeIterator<T> & insert(NodeIterator<T> &ittr,const T &elem){
+    T oldElem = ittr.current->data;
+    ittr.current->data = elem;
+    Node<T> *newNode = new Node<T>(oldElem);
+    newNode->next = ittr.current->next;
+    newNode->previous = ittr.current;
+    ittr.current->next->previous = newNode;
+    ittr.current->next = newNode;
+    ++count;
+    return ittr;
+}
+
+NodeIterator<T> & erase(NodeIterator<T> &ittr){
+  Node<T> *nodeToRemove = ittr.current;
+  (nodeToRemove->previous)->next = nodeToRemove->next;
+  (nodeToRemove->next)->previous = nodeToRemove->previous;
+    --count;
+    ++ittr;
+    delete nodeToRemove;
+    return ittr;
+}
 void push_front(const T &ele){
   Node<T> *newNode = new Node<T>(ele);
   if(count>0){
@@ -29,41 +59,38 @@ void push_front(const T &ele){
   }
   head = newNode;
   ++count;
-
 }
 
-T & front(){
+T & front() const{
   return head->data;
-
 }
 
 void push_back(const T &ele){
   Node<T> *newNode = new Node<T>(ele);
   if(count>0){
+    newNode->previous = tail;
     tail->next = newNode;
   }else{
     head = newNode;
   }
   tail = newNode;
   ++count;
-
 }
 
-T & back(){
+T & back() const{
   return tail->data;
-
 }
 
 int size() const{
   return count;
 }
 
- NodeIterator<T> begin(){
+ NodeIterator<T> begin() const{
    NodeIterator<T> s(head);
   return s;
 }
 
-NodeIterator<T> end(){
+NodeIterator<T> end() const{
   NodeIterator<T> s(tail->next);
   return s;
 }
@@ -77,7 +104,6 @@ NodeIterator<T> end(){
   }
   head = nullptr;
 }
-
 
 };
 // do not edit below this line
