@@ -42,8 +42,17 @@ NodeIterator<T> & insert(NodeIterator<T> &ittr,const T &elem){
 
 NodeIterator<T> & erase(NodeIterator<T> &ittr){
   Node<T> *nodeToRemove = ittr.current;
-  (nodeToRemove->previous)->next = nodeToRemove->next;
-  (nodeToRemove->next)->previous = nodeToRemove->previous;
+  if(head==ittr.current){
+    head = nodeToRemove->next;
+    head->previous = nullptr;
+  }else if(tail==ittr.current){
+    tail = nodeToRemove->previous;
+    tail->next = nullptr;
+  }
+  else{
+    (nodeToRemove->next)->previous = nodeToRemove->previous;
+    (nodeToRemove->previous)->next = nodeToRemove->next;
+  }
     --count;
     ++ittr;
     delete nodeToRemove;
