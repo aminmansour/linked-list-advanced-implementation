@@ -34,6 +34,10 @@ public:
         : current(currentIn) {
     }
 
+    NodeIterator()
+        : current(nullptr) {
+    }
+
     T & operator*() const{
         return current->data;
     }
